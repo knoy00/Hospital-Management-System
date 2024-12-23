@@ -208,11 +208,11 @@ class Admin:
             # check if the id is not in the list of patients
             if patient_index not in range(len(patients)):
                 print('The id entered was not found.')
-                return # stop the procedures
+                return
 
-        except ValueError: # the entered id could not be changed into an int
+        except ValueError:
             print('The id entered is incorrect')
-            return # stop the procedures
+            return
 
         print("-----Doctors Select-----")
         print('Select the doctor that fits these symptoms:')
@@ -231,9 +231,8 @@ class Admin:
             if self.find_index(doctor_index,doctors)!=False:
                     
                 # link the patients to the doctor and vice versa
-                #ToDo11
-                pass
-                
+                doctors[doctor_index].add_patient(patients[patient_index])
+                patients[patient_index].link(doctors[doctor_index].full_name())
                 print('The patient is now assign to the doctor.')
 
             # if the id is not in the list of doctors
@@ -253,10 +252,16 @@ class Admin:
         """
         print("-----Discharge Patient-----")
 
-        patient_index = input('Please enter the patient ID: ')
+        try:
+            patient_index = int(input('Please enter the patient ID: ')) - 1
 
-        #ToDo12
-        pass
+            if self.find_index(patient_index, patients):
+                discharge_patients.append(patients.pop(patient_index))
+                print('Patient discharged.')
+            else:
+                print('Patient not found.')
+        except ValueError: \
+            print('The ID entered is incorrect')
 
     def view_discharge(self, discharged_patients):
         """
@@ -271,9 +276,8 @@ class Admin:
 
     def update_details(self):
         """
-        Allows the user to update and change username, password and address
+        Allows the user to update and change username, password, and address
         """
-
         print('Choose the field to be updated:')
         print(' 1 Username')
         print(' 2 Password')
@@ -281,20 +285,25 @@ class Admin:
         op = int(input('Input: '))
 
         if op == 1:
-            #ToDo14
-            pass
+            new_username = input('Enter the new username: ')
+            self.__username = new_username
+            print('Username updated successfully.')
 
         elif op == 2:
             password = input('Enter the new password: ')
             # validate the password
             if password == input('Enter the new password again: '):
                 self.__password = password
+                print('Password updated successfully.')
+            else:
+                print('Passwords do not match. Please try again.')
 
         elif op == 3:
-            #ToDo15
-            pass
+            new_address = input('Enter the new address: ')
+            self.__address = new_address
+            print('Address updated successfully.')
 
         else:
-            #ToDo16
-            pass
+            print('Invalid option.')
+
 
