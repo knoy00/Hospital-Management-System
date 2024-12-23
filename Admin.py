@@ -79,7 +79,7 @@ class Admin:
 
 
 
-        op = input('Inout: ')
+        op = input('Input: ')
 
 
         # register
@@ -97,19 +97,22 @@ class Admin:
             for doctor in doctors:
                 if first_name == doctor.get_first_name() and surname == doctor.get_surname():
                     print('Name already exists.')
-                    #ToDo5
-                    pass # save time and end the loop
+                    name_exists = True
+                    break
 
-            #ToDo6
-            pass# add the doctor ...
+                if not name_exists:
+                    new_doctor = Doctor(first_name, surname, speciality)
+                    doctors.append(new_doctor)
+                    print('Doctor registered.')
+
+
                                                          # ... to the list of doctors
             print('Doctor registered.')
 
         # View
         elif op == '2':
             print("-----List of Doctors-----")
-            #ToDo7
-            pass
+            self.view(doctors)
 
         # Update
         elif op == '3':
@@ -139,23 +142,36 @@ class Admin:
             print(' 1 First name')
             print(' 2 Surname')
             print(' 3 Speciality')
-            op = int(input('Input: ')) # make the user input lowercase
+            update_op = int(input('Input: ')) # make the user input lowercase
 
-            #ToDo8
-            pass
+            if update_op == 1:
+                new_first_name = input('Enter the new first name: ')
+                doctors.set_first_name(index,new_first_name)
+
+            elif update_op == 2:
+                new_surname = input('Enter the new surname: ')
+                doctors.set_surname(index,new_surname)
+
+            elif update_op == 3:
+                new_speciality = input('Enter the new speciality: ')
+                doctors.set_speciality(index,new_speciality)
+            else:
+                print('Invalid Option!')
 
         # Delete
         elif op == '4':
             print("-----Delete Doctor-----")
             print('ID |          Full Name           |  Speciality')
             self.view(doctors)
-
-            doctor_index = input('Enter the ID of the doctor to be deleted: ')
-            #ToDo9
-            pass
-
-           
-            print('The id entered is incorrect')
+            try:
+                doctor_index = input('Enter the ID of the doctor to be deleted: ')
+                if doctor_index!=False:
+                    doctors.pop(doctor_index)
+                    print('Doctot deleted')
+                else:
+                    print('Doctor not found')
+            except ValueError:
+                print('The id entered is incorrect')
 
         # if the id is not in the list of patients
         else:
