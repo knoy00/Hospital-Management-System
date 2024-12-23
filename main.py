@@ -38,13 +38,12 @@ def main():
 
         if op == '1':
             # 1- Register/view/update/delete doctor
-         #ToDo1
-          pass
+            admin.doctor_management(doctors)
+
 
         elif op == '2':
             # 2- View or discharge patients
-            #ToDo2
-            pass
+            admin.view_patient(patients)
 
             while True:
                 op = input('Do you want to discharge a patient(Y/N):').lower()

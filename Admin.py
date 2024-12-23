@@ -104,10 +104,7 @@ class Admin:
                     new_doctor = Doctor(first_name, surname, speciality)
                     doctors.append(new_doctor)
                     print('Doctor registered.')
-
-
-                                                         # ... to the list of doctors
-            print('Doctor registered.')
+                    break
 
         # View
         elif op == '2':
@@ -175,7 +172,7 @@ class Admin:
 
         # if the id is not in the list of patients
         else:
-            print('Invalid operation choosen. Check your spelling!')
+            print('Invalid operation chosen. Check your spelling!')
 
 
     def view_patient(self, patients):
@@ -186,8 +183,8 @@ class Admin:
         """
         print("-----View Patients-----")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
-        #ToDo10
-        pass
+
+        for index, patient in enumerate(patients): print(f'{index + 1:3}|{patient}')
 
     def assign_doctor_to_patient(self, patients, doctors):
         """
@@ -270,8 +267,7 @@ class Admin:
 
         print("-----Discharged Patients-----")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
-        #ToDo13
-        pass
+        for index, patient in enumerate(discharged_patients): print(f'{index + 1:3}|{patient}')
 
     def update_details(self):
         """
