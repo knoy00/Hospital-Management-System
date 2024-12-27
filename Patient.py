@@ -48,3 +48,35 @@ class Patient:
 
     def __str__(self):
         return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'
+
+    def to_dict(self):
+        """
+        Convert patient object to dictionary
+        """
+        return {
+            'first_name': self.__first_name,
+            'surname': self.__surname,
+            'age': self.__age,
+            'mobile': self.__mobile,
+            'postcode': self.__postcode,
+            'doctor': self.__doctor,
+            'symptoms': self.__symptoms
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        """
+        Create a patient object from dictionary
+        """
+
+        patient = cls(data['first_name'], data['surname'], data['age'], data['mobile'], data['postcode'])
+        patient.__doctor = data['doctor']
+        patient.__symptoms = data['symptoms']
+
+        return patient
+
+    def surname(self):
+        """
+        Return the surname of the patient
+        """
+        return self.__surname

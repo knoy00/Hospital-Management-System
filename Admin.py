@@ -1,6 +1,7 @@
 from Doctor import Doctor
 
 from Doctor import Doctor
+from Patient import Patient
 
 from collections import defaultdict
 
@@ -88,6 +89,7 @@ class Admin:
 
         # register
         if op == '1':
+            print()
             print("-----Register-----")
 
             # get the doctor details
@@ -119,6 +121,7 @@ class Admin:
         # Update
         elif op == '3':
             while True:
+                print()
                 print("-----Update Doctor`s Details-----")
                 print('ID |          Full name           |  Speciality')
                 self.view(doctors)
@@ -140,6 +143,7 @@ class Admin:
                     print('The ID entered is incorrect')
 
             # menu
+            print()
             print('Choose the field to be updated:')
             print(' 1 First name')
             print(' 2 Surname')
@@ -162,6 +166,7 @@ class Admin:
 
         # Delete
         elif op == '4':
+            print()
             print("-----Delete Doctor-----")
             print('ID |          Full Name           |  Speciality')
             self.view(doctors)
@@ -186,6 +191,7 @@ class Admin:
         Args:
             patients (list<Patients>): list of all the active patients
         """
+
         print()
         print("-----View Patients-----")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
@@ -257,6 +263,7 @@ class Admin:
             patients (list<Patients>): the list of all the active patients
             discharge_patients (list<Patients>): the list of all the non-active patients
         """
+        print()
         print("-----Discharge Patient-----")
 
         try:
@@ -285,6 +292,7 @@ class Admin:
         """
         Allows the user to update and change username, password, and address
         """
+        print()
         print('Choose the field to be updated:')
         print(' 1 Username')
         print(' 2 Password')
@@ -320,7 +328,7 @@ class Admin:
         Args:
             patients (list<Patients>): the list of all the active patients
         """
-
+        print()
         print("-------Add Symptom to Patient-------")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
         self.view(patients)
@@ -337,19 +345,73 @@ class Admin:
         except ValueError:
             print('The ID entered is incorrect')
 
+    def view_patient_symptoms(self, patients):
+        """
+        Allows the admin to view a patient's symptoms
+        Args:
+            patients (list<Patient>): the list of all the active patients
+        """
+        print()
+        print("-----View Patient's Symptoms-----")
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        self.view(patients)
+
+        patient_index = input('Please enter the patient ID: ')
+        try:
+            patient_index = int(patient_index) - 1
+            if patient_index in range(len(patients)):
+                patients[patient_index].print_symptoms()
+            else:
+                print('The ID entered was not found.')
+        except ValueError:
+            print('The ID entered is incorrect.')
+
     def group_patients_by_surname(self, patients):
         """
         Group patients by their surname and display them Args:
             patients (list<Patient>): the list of all the active patients
         """
 
-    grouped_patients = defaultdict(list)
+        grouped_patients = defaultdict(list)
 
-    for patient in patients:
-        grouped_patients[patient.surname()].append(patient)
+        for patient in patients:
+            grouped_patients[patient.surname()].append(patient)
 
-    for surname, patients in grouped_patients.items():
-        print(f'--- Surname: {surname} ---')
-    for patient in patients:
-        print(patient)
-    print()
+        for surname, patients in grouped_patients.items():
+            print()
+            print(f'--- Surname: {surname} ---')
+            for patient in patients:
+                print(patient)
+            print()
+
+    def save_patients(self, patients, filename='patients.json'):
+        """
+          Save patient data to a file
+          Args:
+              patients (list<Patients>): the list of all the active patients
+              filename (str): the name of the file to save the data to
+        """
+        with open(filename, 'w') as file:
+            json.dump([patient.to_dict() for patient in patients], file)
+        print(f'Patients data saved to {filename}')
+
+    def load_patients(self, filename='patients.json'):
+        """
+          Load patient data from a file
+          Args:
+              filename (str): the name of the file to load the data from
+          Returns:
+              list<Patients>: a list of all the loaded patients
+        """
+        try:
+            with open(filename, 'r') as file:
+                patient_dicts = json.load(file)
+                if not patient_dicts:
+                    return []
+                return [Patient.from_dict(data) for data in patient_dicts]
+        except FileNotFoundError:
+            print(f'File {filename} not found.')
+            return []
+        except json.JSONDecodeError:
+            print(f'Error decoding JSON from {filename}.')
+            return []

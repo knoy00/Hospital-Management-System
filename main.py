@@ -11,14 +11,25 @@ def main():
 
     # Initialising the actors
     admin = Admin('admin','123','B1 1AB') # username is 'admin', password is '123'
-    doctors = [Doctor('John','Smith','Internal Med.'), Doctor('Jone','Smith','Pediatrics'), Doctor('Jone','Carlos','Cardiology')]
-    patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
+
+    try:
+        patients = admin.load_patients()
+        print('Loaded patients from file.')
+    except FileNotFoundError:
+        patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('David','Smith', 15, '07123456789','C1 ABC')]
+        print('No patients found in file, using default data.')
+
+    doctors = [Doctor('John', 'Smith', 'Internal Med.'), Doctor('Jone', 'Smith', 'Pediatrics'),Doctor('Jone', 'Carlos', 'Cardiology')]
     discharged_patients = []
 
-    # #Adding Symptoms to patiets
-    # patients[0].add_symptom('Shortness of breath')
-    # patients[1].add_symptom('Headache')
-    # patients[2].add_symptom('Fever')
+    # Add symptoms to patients
+    # if patients:
+    #     patients[0].add_symptom('Cough')
+    #     patients[0].add_symptom('Fever')
+    #     patients[1].add_symptom('Headache')
+    #     patients[2].add_symptom('Sore throat')
+
+
 
 
     # keep trying to login tell the login details are correct
@@ -41,7 +52,9 @@ def main():
         print(' 6- View doctor\'s assigned patients')
         print(' 7- View patient\'s assigned doctor')
         print(' 8- View patient\'s symptoms')
-        print(' 9- Quit')
+        print(' 9- Add symptom to patient')
+        print(' 10- Group patients by Surname')
+        print(' 11-Quit')
 
         # get the option
         op = input('Option: ')
@@ -93,8 +106,20 @@ def main():
 
 
         elif op == '8':
-            # 8- Add symptoms to a patient
+            # 8- View patient symptoms
+            admin.view_patient_symptoms(patients)
+
+        elif op == '9':
+            # 9- Add symptom to patient
             admin.add_symptom_to_patient(patients)
+
+        elif op == '10':
+            # 9- Group patients by Surname
+            admin.group_patients_by_surname(patients)
+
+        elif op == '11':
+            admin.save_patients(patients)
+            running = False
 
         else:
             # the user did not enter an option that exists in the menu
