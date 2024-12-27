@@ -3,6 +3,7 @@ from Admin import Admin
 from Doctor import Doctor
 from Patient import Patient
 
+
 def main():
     """
     the main function to be ran when the program runs
@@ -14,9 +15,14 @@ def main():
     patients = [Patient('Sara','Smith', 20, '07012345678','B1 234'), Patient('Mike','Jones', 37,'07555551234','L2 2AB'), Patient('Daivd','Smith', 15, '07123456789','C1 ABC')]
     discharged_patients = []
 
+    # #Adding Symptoms to patiets
+    # patients[0].add_symptom('Shortness of breath')
+    # patients[1].add_symptom('Headache')
+    # patients[2].add_symptom('Fever')
+
+
     # keep trying to login tell the login details are correct
     while True:
-        print("Attempt")
         if admin.login():
             running = True # allow the program to run
             break
@@ -25,13 +31,17 @@ def main():
 
     while running:
         # print the menu
+        print()
         print('Choose the operation:')
         print(' 1- Register/view/update/delete doctor')
         print(' 2- Discharge patients')
         print(' 3- View discharged patient')
         print(' 4- Assign doctor to a patient')
         print(' 5- Update admin detais')
-        print(' 6- Quit')
+        print(' 6- View doctor\'s assigned patients')
+        print(' 7- View patient\'s assigned doctor')
+        print(' 8- View patient\'s symptoms')
+        print(' 9- Quit')
 
         # get the option
         op = input('Option: ')
@@ -72,9 +82,19 @@ def main():
             admin.update_details()
 
         elif op == '6':
-            # 6 - Quit
-            #ToDo5
-            pass
+            # View patients assigned to each doctor
+            for doctor in doctors:
+                doctor.view_assigned_patients()
+
+        elif op == '7':
+            # 7- View doctor's assigned patients
+            for patient in patients:
+                patient.view_assigned_doctor()
+
+
+        elif op == '8':
+            # 8- Add symptoms to a patient
+            admin.add_symptom_to_patient(patients)
 
         else:
             # the user did not enter an option that exists in the menu

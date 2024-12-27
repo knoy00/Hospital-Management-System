@@ -2,6 +2,10 @@ from Doctor import Doctor
 
 from Doctor import Doctor
 
+from collections import defaultdict
+
+import json
+
 
 class Admin:
     """A class that deals with the Admin operations"""
@@ -29,6 +33,7 @@ class Admin:
         Returns:
             string: the username
         """
+        print()
         print("-----Login-----")
         username = input('Enter the username: ')
         password = input('Enter the password: ')
@@ -36,8 +41,7 @@ class Admin:
         if self.__username == username and self.__password == password:
             print("Login successful!")
             return self.__username
-        else:
-            raise Exception("Invalid Credentials")
+
 
     def find_index(self,index,doctors):
         
@@ -67,7 +71,7 @@ class Admin:
         Args:
             doctors (list<Doctor>): the list of all the doctors names
         """
-
+        print()
         print("-----Doctor Management-----")
 
         # menu
@@ -108,6 +112,7 @@ class Admin:
 
         # View
         elif op == '2':
+            print()
             print("-----List of Doctors-----")
             self.view(doctors)
 
@@ -161,7 +166,7 @@ class Admin:
             print('ID |          Full Name           |  Speciality')
             self.view(doctors)
             try:
-                doctor_index = input('Enter the ID of the doctor to be deleted: ')
+                doctor_index = int(input('Enter the ID of the doctor to be deleted: '))
                 if doctor_index!=False:
                     doctors.pop(doctor_index)
                     print('Doctot deleted')
@@ -181,6 +186,7 @@ class Admin:
         Args:
             patients (list<Patients>): list of all the active patients
         """
+        print()
         print("-----View Patients-----")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
 
@@ -193,6 +199,7 @@ class Admin:
             patients (list<Patients>): the list of all the active patients
             doctors (list<Doctor>): the list of all the doctors
         """
+        print()
         print("-----Assign-----")
 
         print("-----Patients-----")
@@ -269,7 +276,7 @@ class Admin:
         Args:
             discharge_patients (list<Patients>): the list of all the non-active patients
         """
-
+        print()
         print("-----Discharged Patients-----")
         print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
         for index, patient in enumerate(discharged_patients): print(f'{index + 1:3}|{patient}')
@@ -307,3 +314,42 @@ class Admin:
             print('Invalid option.')
 
 
+    def add_symptom_to_patient(self, patients):
+        """
+        Allow the admin to add a symptom to a patient
+        Args:
+            patients (list<Patients>): the list of all the active patients
+        """
+
+        print("-------Add Symptom to Patient-------")
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        self.view(patients)
+
+
+        try:
+            patient_index = int(input('Please enter the patient ID: ')) - 1
+
+            if self.find_index(patient_index, patients):
+                patients[patient_index].add_symptom(input('Please enter the symptom: '))
+                print('Symptom added.')
+            else:
+                print('Patient not found.')
+        except ValueError:
+            print('The ID entered is incorrect')
+
+    def group_patients_by_surname(self, patients):
+        """
+        Group patients by their surname and display them Args:
+            patients (list<Patient>): the list of all the active patients
+        """
+
+    grouped_patients = defaultdict(list)
+
+    for patient in patients:
+        grouped_patients[patient.surname()].append(patient)
+
+    for surname, patients in grouped_patients.items():
+        print(f'--- Surname: {surname} ---')
+    for patient in patients:
+        print(patient)
+    print()
