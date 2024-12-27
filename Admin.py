@@ -415,3 +415,88 @@ class Admin:
         except json.JSONDecodeError:
             print(f'Error decoding JSON from {filename}.')
             return []
+
+    def view(self, items):
+        """
+        Generic method to print details of a list of items (doctors or patients)
+        Args:
+            items (list): The list of items to view
+        """
+        for index, item in enumerate(items):
+            print(f'{index + 1:3} | {item}')
+
+    def relocate_patient(self, patients, doctors):
+        """
+        Allows the admin to relocate a patient from one doctor to another
+        Args:
+            patients (list<Patient>): the list of all the active patients
+            doctors (list<Doctor>): the list of all the active doctors
+        """
+        print()
+        print("-----Relocate Patient-----")
+        print('ID |          Full Name           |      Doctor`s Full Name      | Age |    Mobile     | Postcode ')
+        self.view(patients)
+
+        patient_index = input('Please enter the patient ID: ')
+        try:
+            patient_index = int(patient_index) - 1
+            if patient_index in range(len(patients)):
+                print("-----Available Doctors-----")
+                self.view(doctors)
+                doctor_index = input('Please enter the new doctor ID: ')
+                try:
+                    doctor_index = int(doctor_index) - 1
+                    if doctor_index in range(len(doctors)):
+                        patients[patient_index].link(doctors[doctor_index].full_name())
+                        doctors[doctor_index].add_patient(patients[patient_index])
+                        print(
+                            f"Patient {patients[patient_index].full_name()} has been relocated to Dr. {doctors[doctor_index].full_name()}.")
+                    else:
+                        print('The doctor ID entered was not found.')
+                except ValueError:
+                    print('The doctor ID entered is incorrect.')
+            else:
+                print('The patient ID entered was not found.')
+        except ValueError:
+            print('The patient ID entered is incorrect.')
+
+    def generate_management_report(doctors, patients):
+        """
+        Generates a management report showing total number of doctors,
+        total number of patients per doctor, total number of appointments
+        per month per doctor, and total number of patients based on illness type.
+        Args:
+            doctors (list<Doctor>): the list of all the active doctors
+            patients (list<Patient>): the list of all the active patients
+        """
+        total_doctors = len(doctors)
+        print(f"Total number of doctors in the system: {total_doctors}")
+
+        print("Total number of patients per doctor:")
+        for doctor in doctors:
+            print(f"Dr. {doctor.full_name()}: {len(doctor.get_patients())} patients")
+
+        print("Total number of appointments per month per doctor:")
+        # Assuming appointments are stored in a suitable structure within the Doctor class
+        for doctor in doctors:
+            appointments_per_month = calculate_appointments_per_month(doctor)
+            print(f"Dr. {doctor.full_name()}: {appointments_per_month} appointments per month")
+
+        print("Total number of patients based on illness type:")
+        illness_count = defaultdict(int)
+        for patient in patients:
+            for symptom in patient.get_symptoms():
+                illness_count[symptom] += 1
+        for illness, count in illness_count.items():
+            print(f"{illness}: {count} patients")
+
+    def calculate_appointments_per_month(doctor):
+        """
+        Placeholder function to calculate the number of appointments per month for a doctor
+        Args:
+            doctor (Doctor): a doctor object
+        Returns:
+            int: the number of appointments per month
+        """
+        # Implement logic to calculate appointments per month
+        return len(doctor.get_appointments())  # Simplified for demonstration purposes

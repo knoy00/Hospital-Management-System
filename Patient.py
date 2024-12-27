@@ -43,8 +43,13 @@ class Patient:
             print(f'{self.full_name()} has no symptoms listed.')
 
     def view_assigned_doctor(self):
-        """Prints the assigned doctor's full name"""
-        print(f'The assigned doctor is: {self.__doctor}')
+        """Prints the assigned doctor to a patient"""
+        print()
+        if self.__doctor == 'None':
+            print(f'{self.full_name()} has not been assigned a doctor yet.')
+        else:
+            print(f'{self.full_name()} has been assigned to Dr. {self.__doctor}')
+
 
     def __str__(self):
         return f'{self.full_name():^30}|{self.__doctor:^30}|{self.__age:^5}|{self.__mobile:^15}|{self.__postcode:^10}'

@@ -54,7 +54,9 @@ def main():
         print(' 8- View patient\'s symptoms')
         print(' 9- Add symptom to patient')
         print(' 10- Group patients by Surname')
-        print(' 11-Quit')
+        print(' 11- Relocate patient to another doctor')
+        print(' 12- View management report')
+        print(' 13- Quit')
 
         # get the option
         op = input('Option: ')
@@ -118,8 +120,18 @@ def main():
             admin.group_patients_by_surname(patients)
 
         elif op == '11':
+            # 11- Relocate patient to another doctor
+            admin.relocate_patient(patients, doctors)
+
+        elif op == '12':
+            # 12- View management report
+            admin.view_management_report(patients, doctors, discharged_patients)
+
+        elif op == '13':
+            # 13- Quit
             admin.save_patients(patients)
             running = False
+
 
         else:
             # the user did not enter an option that exists in the menu
