@@ -33,6 +33,9 @@ class Patient:
         """Adds a symptom to the list of symptoms"""
         self.__symptoms.append(symptom)
 
+    def get_symptoms(self):
+        return self.__symptoms
+
     def print_symptoms(self):
         """Prints all the symptoms"""
         if self.__symptoms:

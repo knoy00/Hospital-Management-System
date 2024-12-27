@@ -460,7 +460,7 @@ class Admin:
         except ValueError:
             print('The patient ID entered is incorrect.')
 
-    def generate_management_report(doctors, patients):
+    def generate_management_report(self, doctors, patients, discharged_patients):
         """
         Generates a management report showing total number of doctors,
         total number of patients per doctor, total number of appointments
@@ -468,35 +468,39 @@ class Admin:
         Args:
             doctors (list<Doctor>): the list of all the active doctors
             patients (list<Patient>): the list of all the active patients
+            discharged_patients (list<Patient>): the list of all discharged patients
         """
         total_doctors = len(doctors)
+        print()
         print(f"Total number of doctors in the system: {total_doctors}")
 
+        print()
         print("Total number of patients per doctor:")
         for doctor in doctors:
             print(f"Dr. {doctor.full_name()}: {len(doctor.get_patients())} patients")
 
+        print()
         print("Total number of appointments per month per doctor:")
         # Assuming appointments are stored in a suitable structure within the Doctor class
         for doctor in doctors:
-            appointments_per_month = calculate_appointments_per_month(doctor)
+            appointments_per_month = self.calculate_appointments_per_month(doctor)
             print(f"Dr. {doctor.full_name()}: {appointments_per_month} appointments per month")
 
+        print()
         print("Total number of patients based on illness type:")
         illness_count = defaultdict(int)
-        for patient in patients:
+        for patient in patients + discharged_patients:
             for symptom in patient.get_symptoms():
                 illness_count[symptom] += 1
         for illness, count in illness_count.items():
             print(f"{illness}: {count} patients")
 
-    def calculate_appointments_per_month(doctor):
+    def calculate_appointments_per_month(self, doctor):
         """
         Placeholder function to calculate the number of appointments per month for a doctor
         Args:
             doctor (Doctor): a doctor object
         Returns:
-            int: the number of appointments per month
+                int: the number of appointments per month
         """
-        # Implement logic to calculate appointments per month
-        return len(doctor.get_appointments())  # Simplified for demonstration purposes
+        return len(doctor.get_appointments())

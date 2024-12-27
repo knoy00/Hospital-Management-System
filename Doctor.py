@@ -38,6 +38,13 @@ class Doctor:
     def add_patient(self, patient):
         self.__patients.append(patient)
 
+    def get_patients(self):
+        return self.__patients
+
+    def get_appointments(self):
+    # Placeholder for getting appointments; implement as needed
+        return []
+
     def __str__(self):
         return f'{self.full_name():^30}|{self.__speciality:^15}'
 
@@ -46,3 +53,4 @@ class Doctor:
         print(f'-----Patients Assigned to Dr. {self.full_name()}-----')
         for index, patient in enumerate(self.__patients):
             print(f'{index + 1:3} | {patient}')
+
