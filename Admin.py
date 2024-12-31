@@ -226,7 +226,8 @@ class Admin:
         except ValueError:
             print('The id entered is incorrect')
             return
-
+        
+        print()
         print("-----Doctors Select-----")
         print('Select the doctor that fits these symptoms:')
         patients[patient_index].print_symptoms() # print the patient symptoms

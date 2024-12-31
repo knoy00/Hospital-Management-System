@@ -44,7 +44,7 @@ def main():
         print(' 2- Discharge patients')
         print(' 3- View discharged patient')
         print(' 4- Assign doctor to a patient')
-        print(' 5- Update admin detais')
+        print(' 5- Update admin details')
         print(' 6- View doctor\'s assigned patients')
         print(' 7- View patient\'s assigned doctor')
         print(' 8- View patient\'s symptoms')
